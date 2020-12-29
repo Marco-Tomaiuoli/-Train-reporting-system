@@ -1,5 +1,0 @@
-Libro di testo di riferimento
-[S16] William Stallings. Computer organization and
-architecture designing for performance. Tenth
-edition. Pearson education, 2016.
-
