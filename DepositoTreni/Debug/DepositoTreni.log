@@ -1,0 +1,8 @@
+﻿  DepositoTreni.cpp
+  Train.cpp
+C:\Users\marco\Desktop\Programmazione\C++\DepositoTreni\Train.cpp(59,21): warning C4018: '<': errata corrispondenza tra signed e unsigned
+  main.cpp
+  Generazione del codice in corso...
+main.obj : error LNK2019: riferimento al simbolo esterno "public: __thiscall DepositoTreni<class Train>::DepositoTreni<class Train>(void)" (??0?$DepositoTreni@VTrain@@@@QAE@XZ) non risolto nella funzione _main
+main.obj : error LNK2019: riferimento al simbolo esterno "public: void __thiscall DepositoTreni<class Train>::posiziona_treno(class Train &)" (?posiziona_treno@?$DepositoTreni@VTrain@@@@QAEXAAVTrain@@@Z) non risolto nella funzione _main
+C:\Users\marco\Desktop\Programmazione\C++\DepositoTreni\Debug\DepositoTreni.exe : fatal error LNK1120: 2 esterni non risolti
