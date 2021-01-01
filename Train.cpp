@@ -107,4 +107,12 @@ void Train::parcheggia(bool inStation, int p)
 		
 }
 
+int Train::posInt()
+{
+	int posIntero = static_cast<int> (pos);									
+	if (pos > (posIntero + 0.5))											//approssimazione nell'intero successivo se la parte decimela è maggiore di 0.5
+		return posIntero + 1;
+	return posIntero;
+}
+
 

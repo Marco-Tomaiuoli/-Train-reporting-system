@@ -1,4 +1,4 @@
-// Studente: Umberto Salviati
+// Studente: Umberto Salviati1
 
 
 #ifndef train_h
@@ -30,6 +30,8 @@ public:
 	int getId();													//ritorna il codice del treno
 
 	void parcheggia(bool inStation, int p);							//funzione per porre il treno in stato di parcheggio
+
+	int posInt();													//approssima il valore pos traformandolo in int
 
 	Train(const Train&) = delete;									// escludo i costruttori di copia e assegnamento(non hanno senso per un treno)
 	Train operator=(const Train&) = delete;
