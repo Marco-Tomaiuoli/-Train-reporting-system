@@ -1,77 +1,46 @@
 #include "Locale.h"
 using namespace std;
-Locale::Locale(std::string name, int distance)
-    :Stazione(name, distance)
-{
-    num_binari = 2;
-    for (int i = 0; i < num_binari; i++)
-    {
-        gone.push_back(0);
-        come_back.push_back(0);
-    }
-}
+Locale::Locale(string name, int distance)
+    :Principale(name, distance){}
 
-int Locale::change_status(int andata_o_ritorno)
+bool Locale::is_arriving(bool gone_or_return, int priority)
 {
-    int ret = -1;
-    if (andata_o_ritorno == 0)
+    bool done = false;
+    if (priority == 1 || priority == 2)
     {
-        for (int i = 0; i < num_binari; i++)
+        done = true;    //il treno veloce o superveloce non si ferma alle stazioni e il binario veloce è sempre libero, di conseguenza lo lascio passare
+    }
+    else if (priority == 1)
+    {
+        int pos = -1;
+        if (is_it_free(gone_or_return))
         {
-            if (gone[i] == 0)
+            if (!gone_or_return)//andata
             {
-                gone[i] = 1;
-                ret = 0;
-                return ret;
+                for (int i = 0; i < num_binari; i++)
+                {
+                    if (gone[i] == 0)
+                    {
+                        pos = i;
+                        done = true;
+                        break;
+                    }
+                }
+            }
+            else if (gone_or_return)//ritorno
+            {
+                for (int i = 0; i < num_binari; i++)
+                {
+                    if (come_back[i] == 0)
+                    {
+                        pos = i;
+                        done = true;
+                        break;
+                    }
+                }
             }
         }
+        change_status(gone_or_return, pos);
     }
-    else if (andata_o_ritorno == 1)
-    {
-        for (int i = 0; i < num_binari; i++)
-        {
-            if (come_back[i] == 0)
-            {
-                come_back[i] = 1;
-                ret = 0;
-                return ret;
-            }
-        }
-    }
-    else {
-        throw invalid_argument("");
-    }
-    return ret;
-}
-
-int Locale::is_it_free(int indice)
-{
-    //restituisce 1 se c'è un binario vuoto, 0 se nessuno
-    int ret = 0;
-    if (indice == 0)
-    {
-        for (int i = 0; i < num_binari; i++)
-        {
-            if (gone[i] == 0)
-            {
-                ret = 1;
-                continue;
-            }
-        }
-    }
-    else if (indice == 1)
-    {
-        for (int i = 0; i < num_binari; i++)
-        {
-            if (gone[i] == 1)
-            {
-                ret = 1;
-                continue;
-            }
-        }
-    }
-    else {
-        throw exception("");
-    }
-    return ret;
+    return done;
 }

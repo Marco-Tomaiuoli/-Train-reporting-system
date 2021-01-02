@@ -4,13 +4,18 @@
 class Principale : public Stazione {
 public:
     Principale(std::string, int);
-    int change_status(int andata_o_ritorno);
-    //prende in input 0 se treno in andata, 1 se treno in ritorno; ritorna 0 se è andato a buon fine, -1 se i binari sono tutti pieni
-    int is_it_free(int indice); //prende in input 0 se treno in andata, 1 se treno in ritorno; ritorna 1 se c'è almeno un binario libero, 0 altrimenti
+    bool is_arriving(bool);
 
-private:
-    int num_binari;
+protected:
+    void change_status(bool, int);
+    //prende in input 0 se treno in andata, 1 se treno in ritorno; cambia lo stato del binario
+    bool is_it_free(bool); //prende in input 0 se treno in andata, 1 se treno in ritorno; dice se c'è almeno un binario libero
+    class busy_platform {};
+
     std::vector<int> gone;
     std::vector<int> come_back;
+    void change_gone(int);
+    void change_back(int);
+    constexpr static int num_binari = 2;
 };
-#endif 
+#endif

@@ -3,7 +3,6 @@ using namespace std;
 Principale::Principale(std::string name, int distance)
     :Stazione(name, distance)
 {
-    num_binari = 3;
     for (int i = 0; i < num_binari; i++)
     {
         gone.push_back(0);
@@ -11,64 +10,105 @@ Principale::Principale(std::string name, int distance)
     }
 }
 
-int Principale::is_it_free(int indice)
+//ritorna se c'è un binario libero
+bool Principale::is_it_free(bool andata_o_ritorno)
 {
-    //restituisce 1 se c'è un binario vuoto, 0 se nessuno
-    int ret = 0;
-    if (indice == 0)
+    bool ret = false;
+    if (!andata_o_ritorno)//andata
     {
         for (int i = 0; i < num_binari; i++)
         {
             if (gone[i] == 0)
             {
-                ret = 1;
-                continue;
+                ret = true;
+                break;
             }
         }
     }
-    else if (indice == 1)
-    {
-        for (int i = 0; i < num_binari; i++)
-        {
-            if (gone[i] == 1)
-            {
-                ret = 1;
-                continue;
-            }
-        }
-    }
-    else {
-        throw exception("");
-    }
-    return ret;
-}
-
-int Principale::change_status(int andata_o_ritorno)
-{
-    if (andata_o_ritorno == 0)
-    {
-        for (int i = 0; i < num_binari; i++)
-        {
-            if (gone[i] == 0)
-            {
-                gone[i] = 1;
-                return 0;
-            }
-        }
-    }
-    else if (andata_o_ritorno == 1)
+    else if (andata_o_ritorno)//ritorno
     {
         for (int i = 0; i < num_binari; i++)
         {
             if (come_back[i] == 0)
             {
-                come_back[i] = 1;
-                return 0;
+                ret = true;
+                break;
             }
         }
     }
-    else {
-        throw invalid_argument("");
+    return ret;
+}
+
+//libera il binario indicato 
+void Principale::change_status(bool andata_o_ritorno, int num_binario)
+{
+    if (num_binario == -1)
+    {
+        throw busy_platform();
     }
-    return -1;
+    if (num_binario > 1)
+        throw exception("");
+    if (andata_o_ritorno == 0)  //andata
+    {
+        change_gone(num_binario);
+    }
+    else if(andata_o_ritorno == 1) //ritorno
+    {
+        change_back(num_binario);
+    }
+}
+
+void Principale::change_gone(int num_binario)
+{
+    if (gone[num_binario] == 1)
+    {
+        gone[num_binario] = 0;
+    }
+    else if (gone[num_binario] == 1)
+        gone[num_binario] = 0;
+}
+
+void Principale::change_back(int num_binario)
+{
+    if (come_back[num_binario] == 1)
+    {
+        come_back[num_binario] = 0;
+    }
+    else if (come_back[num_binario] == 1)
+        come_back[num_binario] = 0;
+}
+
+bool Principale::is_arriving(bool andata_o_ritorno)
+{
+    bool fatto = false;
+    int pos = -1;
+    if (is_it_free(andata_o_ritorno))
+    {
+        if (!andata_o_ritorno)//andata
+        {
+            for (int i = 0; i < num_binari; i++)
+            {
+                if (gone[i] == 0)
+                {
+                    pos = i;
+                    fatto = true;
+                    break;
+                }
+            }
+        }
+        else if (andata_o_ritorno)//ritorno
+        {
+            for (int i = 0; i < num_binari; i++)
+            {
+                if (come_back[i] == 0)
+                {
+                    pos = i;
+                    fatto = true;
+                    break;
+                }
+            }
+        }
+    }
+    change_status(andata_o_ritorno, pos);
+    return fatto;
 }
