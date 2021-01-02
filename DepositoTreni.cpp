@@ -1,29 +1,35 @@
+//Studente:Marco Tomaiuoli 1224262
+
+
+
+#pragma once
 #include "DepositoTreni.h"
 using namespace std;
 
-template<typename T>
-DepositoTreni<T>::DepositoTreni() {
+
+DepositoTreni::DepositoTreni() {
+	queue<Train> superveloci;
+	queue<Train> veloci;
+	queue<Train> regionali;
 	deposito.push_back(superveloci);
 	deposito.push_back(veloci);
 	deposito.push_back(regionali);
 }
 
-template<typename T>
-void DepositoTreni<T>::stampa_coda(int priorita) const {
-	for (int i = 0; i < deposito[priorita].size(); i++)
-		cout << deposito[priorita].back() << " ";
+void DepositoTreni::posiziona_treno(Train& train)
+{
+	int priorita = get_priorita(train.getIdentificator());
+	deposito[priorita].push(train);
 }
 
-template<typename T>
-bool DepositoTreni<T>::isEmpty() {
+bool DepositoTreni::isEmpty() {
 	if (deposito[0].size() == 0 && deposito[1].size() == 0 && deposito[2].size() == 0)
 		return true;
 	else
 		return false;
 }
 
-template<typename T>
-int DepositoTreni<T>::get_priorita(int tipo_treno)  {
+int DepositoTreni::get_priorita(int tipo_treno)  {
 	int new_priorita = 0;
 	if (tipo_treno == 0)
 		new_priorita = 2;
@@ -34,19 +40,10 @@ int DepositoTreni<T>::get_priorita(int tipo_treno)  {
 	return new_priorita;
 
 }
-template<typename T>
-void DepositoTreni<T>::posiziona_treno(T train) {
-	//int priorita = get_priorita(T.getIdentificator());  
-	deposito[0].push(train); //mettere priorita tra parantesi
-	
-}
 
-template<typename T>
-void DepositoTreni<T>::elimina_treno() {
-	if (isEmpty()) {
-		cout << "Il deposito e' momentaneamente vuoto" << endl;
+void DepositoTreni::elimina_treno() {
+	if (isEmpty()) 
 		throw Deposito_vuoto_exception();
-	}
 	if (deposito[0].size() != 0)
 		deposito[0].pop();
 	else if (deposito[1].size() != 0)
@@ -56,16 +53,22 @@ void DepositoTreni<T>::elimina_treno() {
 	
 }
 
-int main() {
-	DepositoTreni<double> d;
-	d.posiziona_treno(1);
-	d.stampa_coda(0);
-	d.posiziona_treno(2);
-	d.stampa_coda(0);
-	d.posiziona_treno(3);
-	d.stampa_coda(0);
-	
-	
+void DepositoTreni::print(int priority) {
+	queue <Train> q = deposito[0];
+	cout << deposito[priority].size() << endl;
+	for (int i = 0; i < deposito[priority].size(); i++) {
+		cout << "velocita': " << q.front().getVelocità() << " posizione: " << q.front().getPosizione() << " id del treno: " << q.front().getId();
+		cout << endl;
+		q.pop();
+	}
 }
+
+void DepositoTreni::set_speed(int priority, int new_speed) {
+	deposito[priority].front().setVelocità(new_speed);
+
+}
+
+
+
 
 
