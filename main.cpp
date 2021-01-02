@@ -1,6 +1,5 @@
-
-#include "Locale.h"
 #include "Principale.h"
+#include "Locale.h"
 using namespace std;
 
 int main()
