@@ -13,7 +13,7 @@ protected:
 			
 	bool constrain() override{ 																			//sovrascrivo la classe constrain
 		if (vel > 160 || vel < 0)
-			throw new IllegalArgument();																//lancia encezione
+			throw  IllegalArgument();																//lancia encezione
 
 		return true;
 	}

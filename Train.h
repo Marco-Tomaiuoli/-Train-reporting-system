@@ -71,4 +71,5 @@ protected:
 
 
 class IllegalArgument {};											//classe definita per le eccezioni
+class InvalidTime {};												//classe definita per le eccezioni
 #endif 

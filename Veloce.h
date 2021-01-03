@@ -16,7 +16,7 @@ protected:
 	bool constrain() override																		//sovrascrivo la classe constrain
 	{
 		if (vel > 240 || vel < 0)
-			throw new IllegalArgument();
+			throw IllegalArgument();
 
 		return true;
 	}

@@ -30,7 +30,7 @@ void Train::decremetParkTime()
 {
 	parkTime--;
 	if (parkTime < -1)
-		throw new IllegalArgument();
+		throw InvalidTime{};
 }
 
 Train::Train() {
@@ -92,7 +92,7 @@ void Train::setPosition(double p)
 {
 	pos = p;
 	if (pos < 0)
-		throw new IllegalArgument();
+		throw  IllegalArgument();
 }
 
 int Train::whIsStand() const
