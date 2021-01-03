@@ -1,15 +1,15 @@
-// Studente: Umberto Salviati
+//Studente: Umberto Salviati 1220994
 
-
-#pragma once
+#ifndef SuperVeloce_h
+#define SuperVeloce_h
 
 
 #include "Train.h"
-class SuperVeloce : public Train														//classe figlia di train
+class SuperVeloce : public Train																			//classe figlia di train
 {
 public:
-	SuperVeloce();																		//costruttore di dafault
-	SuperVeloce(int v, int p, int time, int id, bool direzione);						//costruttore
+	SuperVeloce();																							//costruttore di dafault
+	SuperVeloce(int, int, int, int, bool, int, int);														//costruttore
 protected:
 
 	bool constrain() override {															//sovrascrivo la classe constrain
@@ -22,25 +22,11 @@ protected:
 	}
 
 };
-SuperVeloce::SuperVeloce(int v, int p, int time, int id, bool direzione) {				//costruttore
-	
-	setVelocità(static_cast <double>(v));
-	setPosizione(static_cast <double>(p));
-	dir = direzione;
-	t = time;
-	stand = 0;
+SuperVeloce::SuperVeloce(int v, int p, int time, int id, bool direzione, int orarioPart, int posStazioneIniziale) : Train(v, p, time, id, direzione,orarioPart,posStazioneIniziale) {
 	ident = 2;
-	this->id = id;
-}
-SuperVeloce::SuperVeloce()																//costruttore di default
-{
-	vel = 0;
-	pos = 0;
-	t = 0;
-	stand = 0;
-	ident = 2;
-	dir = true;
-	id = 0;
-	
 }
 
+SuperVeloce::SuperVeloce() : Train() {
+	ident = 2;
+}
+#endif 

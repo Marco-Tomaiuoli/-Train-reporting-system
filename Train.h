@@ -1,43 +1,50 @@
 // Studente: Umberto Salviati1
 
 
-#ifndef train_h
-#define train_h
-
+#ifndef Train_h
+#define Train_h
 #include <iostream>
 
 #include <vector>
+//Studente: Umberto Salviati 1220994
+
 
 class Train
 {
 public:
-	bool move(int time, int v, const std::vector<int> stazioni);	//funzione che muove il treno FA LA segnalazione
+	bool move(int v,int time, const std::vector<int> stazioni);		//funzione che muove il treno FA LA segnalazione
 	
-	double getVelocità();											//ritora la velocià
-	void setVelocità(double v);										//set velocià
+	double getSpeed() const;										//ritora la velocià
+	void setSpeed(double v);										//set velocià
 	
-	double getPosizione() ;											//get posizione	
-	void setPosizione(double p);									//set posizione	
+	double getPosition() const;									//get posizione	
+	void setPosition(double p);									//set posizione	
 	
-	int whIsStand();												//Where is Standing : In che posizione è
+	int whIsStand() const;											//Where is Standing : In che posizione è
 	
-	int getIdentificator();											//get Indetificatore
+	int getIdentificator()  const;									//get Indetificatore
 	
-	bool getDir();													//get Direzione di percorrenza
+	bool getDir()  const;											//get Direzione di percorrenza
 
-	bool segnalazione(const std::vector<int> stazioni);				//invia true se a 10 km dalla stazione più vicina
+	bool segnalazione(const std::vector<int> stazioni);		//invia true se a 10 km dalla stazione più vicina
 	
-	int getId();													//ritorna il codice del treno
+	int getId() const;												//ritorna il codice del treno
 
 	void parcheggia(bool inStation, int p);							//funzione per porre il treno in stato di parcheggio
 
-	int posInt();													//approssima il valore pos traformandolo in int
+	int posInt() const;												//approssima il valore pos traformandolo in int
 
-	Train(const Train&) = delete;									// escludo i costruttori di copia e assegnamento(non hanno senso per un treno)
-	Train operator=(const Train&) = delete;
+	Train(Train&)= delete;											//Elimino i costruttore di copia sono logicamente scorretti
+	Train operator=(Train&) const = delete;							//Elimino l'operatore di assegnamento, è logicamente scorretto
+	
+	void stazioneIncrement(int posNextStat);						//increemnta la next stazione	
+	
+	int getOrarioPartenza() const;									//restituisce l'orario di partenza
+
+
 protected:
-	Train() {};														//costruttori vuoti(sono virtuali) 
-	Train(int v, int p, int time, int id, bool direzione) {};
+	Train();														//costruttori vuoti(sono virtuali) 
+	Train(int, int, int, int, bool, int, int);
 	//ATTENZIONE IL DISTRUTTORE DI DEFAULT VA BENE PER TUTTE LE CLASSI ANCHE FIGLIE
 	double vel;														//velocità
 	double pos;														//posizione : disrtanza dalla prima stazione
@@ -46,11 +53,16 @@ protected:
 	int ident;														//identificatore : 0 Regionale 1 Veloce 2 SuperVeloce
 	int stand;														//posizione 0 fermo in stazione, 1 fermo in Parcheggio, -1 in movimento
 	int id;															//numero treno
+	int nextStation;												//posizione della prossima stazione
+	int LastStation;												//posizione della stazione precedente	
+	int tempoParcheggio;											//tempo di parcheggio nella stazione attuale	
+	int OrarioPart;													//orario di partenza	
+	
+	virtual bool constrain() = 0;									//funzione che definisce le condizioni della velocità
 
 	private:
 		double lastSegn = -100;										//dato utile per inviare una unica segnalazione ad ongi stazione -100 è un numero non valido
-	  
-	virtual bool constrain()=0;									//funzione che definisce le condizioni della velocità
+
 };
 
 

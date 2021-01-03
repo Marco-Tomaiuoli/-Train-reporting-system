@@ -1,89 +1,126 @@
-// Studente: Umberto Salviati
+//Studente: Umberto Salviati 1220994
+
 
 
 #include "Train.h"
 
+void Train::stazioneIncrement(int posNextStat)
+{
+	LastStation = nextStation;
+	nextStation = pos;
+
+}
+
+int Train::getOrarioPartenza() const
+{
+	return OrarioPart;
+}
+
+Train::Train() {
+	vel = 0;
+	pos = 0;
+	t = 0;
+	stand = 0;
+	dir = true;
+	id = 0;
+	OrarioPart = 0;
+	nextStation = 0;
+	LastStation = 0;
+}
+Train::Train(int v, int p, int time, int id, bool direzione,int orarioPart,int posStazioneIniziale) {
+	setSpeed(static_cast <double>(v));
+	setPosition(static_cast <double>(p));
+	dir = direzione;
+	t = time;
+	stand = 0;
+	this->id = id;
+	OrarioPart = orarioPart;
+	nextStation = posStazioneIniziale;
+	LastStation = posStazioneIniziale;
+
+}
+
 bool Train::move(int time, int v, const std::vector<int> stazioni)
 {
-	setVelocità(static_cast <double>(v));											//imposta la velocità					
-	if (dir== true)
-		pos += v * ((time - t) / static_cast<double>(60));				//aggiorno la nuova posizione
+	setSpeed(static_cast <double>(v));
+	if (dir == true)
+		pos += v * ((time - t) / static_cast<double>(60));
 	else
 		pos -= v * ((time - t) / static_cast<double>(60));
 	t = time;
-	
+
 	stand = -1;
-	return segnalazione(stazioni);									    //ritorno la eventuale segnalazione
+	return segnalazione(stazioni);
 }
 
-double Train::getVelocità()
-{	
-	return vel;														    //ritorna la velocià
-}
-
-void Train::setVelocità(double v)
+double Train::getSpeed() const
 {
-	vel = v;															//imposta la nuova velocià
-	constrain();														//controllo che le condizioni di velocità siano rispettate
+	return vel;
 }
 
-double Train::getPosizione()
+void Train::setSpeed(double v)
 {
-	return pos;															//ritorna la posizione
+	vel = v;
+	constrain();
 }
 
-void Train::setPosizione(double p)
+double Train::getPosition() const
 {
-	pos = p;															//imposta la posizione
-	if (pos < 0)														//controllo se la posizione è valida
+	return pos;
+}
+
+void Train::setPosition(double p)
+{
+	pos = p;
+	if (pos < 0)
 		throw new IllegalArgument();
 }
 
-int Train::whIsStand()
+int Train::whIsStand() const
 {
-	return stand;														//ritorna lo stato del treno(fermo in stazione,fermo in parcheggio,in movimento)
+	return stand;
 }
 
-int Train::getIdentificator()
+int Train::getIdentificator() const
 {
-	return ident;														//ritorna il tipo di treno						
+	return ident;
 }
 
-bool Train::getDir()
+bool Train::getDir() const
 {
-	return dir;															//ritorna la direzione di percorrenza
+	return dir;
 }
 
 bool Train::segnalazione(const std::vector<int> stazioni) {
-	if (getDir() == true) {												//se il verso è 'positivo'
+	if (getDir() == true) {
 		if ((pos - lastSegn) < 10.00)
 			return false;
-		for (int i = 0; i < stazioni.size(); i++) {						
+		for (int i = 0; i < stazioni.size(); i++) {
 
-			if ((pos < stazioni[i])) {									//se la posiozne dell'i-esima stazione è maggiore di pos
-				if (pos >= (stazioni[i] - 10))							//e se la posizione del treno è nei primi 10 km
+			if ((pos < stazioni[i])) {
+				if (pos >= (stazioni[i] - 10))
 				{
 					lastSegn = pos;
-					return true;										//allora segnala
+					return true;
 				}
-				
+
 				else
-					return false;										//sennò non seganlare
+					return false;
 			}
 		}
 	}
-	else {																// se il verso è negativo
-		for (int i = stazioni[stazioni.size()-1]; i > 0; i--) {			
+	else {
+		for (int i = stazioni[stazioni.size() - 1]; i > 0; i--) {
 			if ((lastSegn - pos) < 10.00)
 				return false;
-			if ((pos > stazioni[i])) {									//se la poszione è maggiore dell' i-esima stazione
-				if (pos <= stazioni[i] + 10)							// e se il treno è nei primi 10 km dalla satazione
+			if ((pos > stazioni[i])) {
+				if (pos <= stazioni[i] + 10)
 				{
 					lastSegn = pos;
-					return true;										//allora segnala		
-				}									
+					return true;
+				}
 				else
-					return false;										//sennò non seganlare
+					return false;
 			}
 		}
 	}
@@ -91,28 +128,26 @@ bool Train::segnalazione(const std::vector<int> stazioni) {
 
 }
 
-int Train::getId()
+int Train::getId() const
 {
-	return id;															//ritorna il codice treno
+	return id;
 }
 
 void Train::parcheggia(bool inStation, int p)
 {
-	setPosizione(static_cast <double>(p) );
-	if (inStation)															//se è parcheggiato in stazione
+	setPosition(static_cast <double>(p));
+	if (inStation)
 		stand = 0;
-	else																	//altrimenti è in un Parcheggio
-			stand = -1;				
-	
-		
+	else
+		stand = -1;
+
+
 }
 
-int Train::posInt()
+int Train::posInt() const
 {
-	int posIntero = static_cast<int> (pos);									
-	if (pos > (posIntero + 0.5))											//approssimazione nell'intero successivo se la parte decimela è maggiore di 0.5
+	int posIntero = static_cast<int> (pos);
+	if (pos > (posIntero + 0.5))
 		return posIntero + 1;
 	return posIntero;
 }
-
-

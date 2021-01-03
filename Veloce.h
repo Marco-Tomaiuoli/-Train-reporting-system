@@ -1,20 +1,19 @@
-// Studente: Umberto Salviati
+//Studente: Umberto Salviati 1220994
 
-
-#pragma once
-
+#ifndef Veloce_h
+#define Veloce_h
 
 
 #include "Train.h"
-class Veloce : public Train													//classe figlia di train
+class Veloce : public Train																			//classe figlia di train
 {
 public:
-	Veloce();																	//costruttore di dafault
-	Veloce(int v, int p, int time, int id, bool direzione);						//costruttore
+	Veloce();																						//costruttore di dafault
+	Veloce(int, int, int, int, bool, int, int);														//costruttore
 protected:
 
 
-	bool constrain() override													//sovrascrivo la classe constrain
+	bool constrain() override																		//sovrascrivo la classe constrain
 	{
 		if (vel > 240 || vel < 0)
 			throw new IllegalArgument();
@@ -23,25 +22,13 @@ protected:
 	}
 
 };
-Veloce::Veloce(int v, int p, int time, int id, bool direzione) {				//costruttore
-	
-	setVelocità(static_cast <double>(v));
-	setPosizione(static_cast <double>(p));
-	dir = direzione;
-	t = time;
-	stand = 0;
+Veloce::Veloce(int v, int p, int time, int id, bool direzione,int orarioPart, int posStazioneIniziale) : Train(v, p, time, id, direzione, orarioPart, posStazioneIniziale) {
 	ident = 1;
-	this->id = id;
-}
-Veloce::Veloce()																//costruttore di default
-{
-	vel = 0;
-	pos = 0;
-	t = 0;
-	stand = 0;
-	ident = 1;
-	dir = true;
-	id = 0;
 }
 
+Veloce::Veloce() : Train() {
+	ident = 1;
+}
+
+#endif 
 
