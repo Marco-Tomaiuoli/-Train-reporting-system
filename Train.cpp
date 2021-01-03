@@ -16,6 +16,23 @@ int Train::getOrarioPartenza() const
 	return OrarioPart;
 }
 
+int Train::getParkTime()
+{
+	return parkTime;
+}
+
+void Train::setParkTime(int TempoParcheggio)
+{
+	parkTime= TempoParcheggio;
+}
+
+void Train::decremetParkTime()
+{
+	parkTime--;
+	if (parkTime < -1)
+		throw new IllegalArgument();
+}
+
 Train::Train() {
 	vel = 0;
 	pos = 0;
@@ -26,6 +43,7 @@ Train::Train() {
 	OrarioPart = 0;
 	nextStation = 0;
 	LastStation = 0;
+	parkTime = -1;
 }
 Train::Train(int v, int p, int time, int id, bool direzione,int orarioPart,int posStazioneIniziale) {
 	setSpeed(static_cast <double>(v));
@@ -37,6 +55,7 @@ Train::Train(int v, int p, int time, int id, bool direzione,int orarioPart,int p
 	OrarioPart = orarioPart;
 	nextStation = posStazioneIniziale;
 	LastStation = posStazioneIniziale;
+	parkTime = -1;
 
 }
 

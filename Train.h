@@ -41,6 +41,9 @@ public:
 	
 	int getOrarioPartenza() const;									//restituisce l'orario di partenza
 
+	int getParkTime();												//restituisce l'orario di partenza
+	void setParkTime(int);											//imposta l'orario di partenza
+	void decremetParkTime();											//Riduce di 1 il tempo di parcheggio
 
 protected:
 	Train();														//costruttori vuoti(sono virtuali) 
@@ -55,7 +58,7 @@ protected:
 	int id;															//numero treno
 	int nextStation;												//posizione della prossima stazione
 	int LastStation;												//posizione della stazione precedente	
-	int tempoParcheggio;											//tempo di parcheggio nella stazione attuale	
+	int parkTime;													//tempo di parcheggio nella stazione attuale	
 	int OrarioPart;													//orario di partenza	
 	
 	virtual bool constrain() = 0;									//funzione che definisce le condizioni della velocità
