@@ -33,6 +33,16 @@ void Train::decremetParkTime()
 		throw InvalidTime{};
 }
 
+int Train::getNextStation()
+{
+	return nextStation;
+}
+
+int Train::getLastStation()
+{
+	return LastStation;
+}
+
 Train::Train() {
 	vel = 0;
 	pos = 0;
@@ -45,7 +55,9 @@ Train::Train() {
 	parkTime = -1;
 }
 Train::Train(int id, bool direzione, int p, std::vector<int> OrariTreno) {
-	setSpeed(static_cast <double>(80));
+	if (OrariTreno.size() <= 0)
+		throw IllegalArgument();
+	setSpeed(80.00);
 	setPosition(static_cast <double>(p));
 	dir = direzione;
 	t = OrariTreno[0];
@@ -60,6 +72,9 @@ Train::Train(int id, bool direzione, int p, std::vector<int> OrariTreno) {
 
 bool Train::move(int time, int v, const std::vector<int> stazioni)
 {
+	if (v == -1)
+		setSpeedMax();
+	else
 	setSpeed(static_cast <double>(v));
 	if (dir == true)
 		pos += v * ((time - t) / static_cast<double>(60));
@@ -71,6 +86,15 @@ bool Train::move(int time, int v, const std::vector<int> stazioni)
 	return segnalazione(stazioni);
 }
 
+bool Train::isArrived(std::vector<int> stazioni)
+{
+	if (dir && pos >= stazioni[stazioni.size() - 1])
+		return true;
+	else if (pos <= 0)
+		return true;
+	else false;
+}
+
 double Train::getSpeed() const
 {
 	return vel;
@@ -79,7 +103,6 @@ double Train::getSpeed() const
 void Train::setSpeed(double v)
 {
 	vel = v;
-	constrain();
 }
 
 double Train::getPosition() const
