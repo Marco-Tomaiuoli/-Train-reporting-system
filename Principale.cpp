@@ -1,5 +1,16 @@
 #include "Principale.h"
 using namespace std;
+
+Principale::Principale(std::string name)    //costruttore per la Prima stazione
+    :Stazione(name, 0)
+{
+    for (int i = 0; i < num_binari; i++)
+    {
+        gone.push_back(0);
+        come_back.push_back(0);
+    }
+}
+
 Principale::Principale(std::string name, int distance)
     :Stazione(name, distance)
 {
@@ -44,10 +55,8 @@ void Principale::change_status(bool andata_o_ritorno, int num_binario)
 {
     if (num_binario == -1)
     {
-        throw busy_platform();
+        return;
     }
-    if (num_binario > 1)
-        throw exception("");
     if (andata_o_ritorno == 0)  //andata
     {
         change_gone(num_binario);
@@ -60,9 +69,9 @@ void Principale::change_status(bool andata_o_ritorno, int num_binario)
 
 void Principale::change_gone(int num_binario)
 {
-    if (gone[num_binario] == 1)
+    if (gone[num_binario] == 0)
     {
-        gone[num_binario] = 0;
+        gone[num_binario] = 1;
     }
     else if (gone[num_binario] == 1)
         gone[num_binario] = 0;

@@ -16,21 +16,15 @@ bool Locale::is_arriving(bool gone_or_return, int priority)
         if(gone_or_return == 0)
         {
             if(fast_platform_gone == 0)
-            
                fast_platform_gone = 1;
-            else
-                fast_platform_gone = 0;
-            
         }else if(gone_or_return == 1)
         {
             if(fast_platform_back == 0)
                 fast_platform_back = 1;
-            else
-                fast_platform_back = 0;
         }
         done = true;    //il treno veloce o superveloce non si ferma alle stazioni e il binario veloce è sempre libero, di conseguenza lo lascio passare
     }
-    else if (priority == 1)
+    else if (priority == 0)
     {
         int pos = -1;
         if (is_it_free(gone_or_return))

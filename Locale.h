@@ -1,3 +1,6 @@
+//Studente: Trevisiol Riccardo 1216353
+
+
 #ifndef LOCALE_H
 #define LOCALE_H
 #include "Principale.h"

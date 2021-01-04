@@ -1,3 +1,5 @@
+//Studente: Trevisiol Riccardo 1216353
+
 #ifndef STAZIONE_H
 #define STAZIONE_H
 #include <string>

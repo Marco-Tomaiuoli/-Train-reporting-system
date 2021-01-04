@@ -1,3 +1,4 @@
+//Studente: Trevisiol Riccardo 1216353
 #ifndef PRINCIPALE_H
 #define PRINCIPALE_H
 #include "Stazione.h"
@@ -5,12 +6,13 @@
 
 class Principale : public Stazione {
 public:
+    Principale(std::string);
     Principale(std::string, int);
     bool is_arriving(bool);
-
-protected:
     bool is_it_free(bool); //prende in input 0 se treno in andata, 1 se treno in ritorno; dice se c'è almeno un binario libero
     void change_status(bool, int);
+
+protected:
     //prende in input 0 se treno in andata, 1 se treno in ritorno; cambia lo stato del binario
     class busy_platform {};
 
