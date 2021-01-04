@@ -6,20 +6,13 @@
 
 #include "Train.h"	
 class Regionale : public Train																			//classe figlia di train
-{	public:
+{	
+public:
 	Regionale();																						//costruttore di dafault
 	Regionale(int, bool, int, std::vector<int>);														//costruttore
-	void setSpeedMax() override {
-		vel = 160;
-	}
+	void setSpeedMax() override;
 
 };
-Regionale::Regionale(int id, bool direzione, int p,std::vector<int> OrariTreno) : Train(id, direzione, p, OrariTreno) {
-	ident = 0;
-}
 
-Regionale::Regionale() : Train() {
-	ident = 0;
-}
 
 #endif 
