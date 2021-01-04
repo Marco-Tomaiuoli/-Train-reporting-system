@@ -1,2 +1,0 @@
-C:\Users\marco\Desktop\Programmazione\C++\DepositoTreni\Debug\DepositoTreni.exe
-C:\Users\marco\Desktop\Programmazione\C++\DepositoTreni\Debug\DepositoTreni.pdb
