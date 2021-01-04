@@ -8,7 +8,7 @@
 class Regionale : public Train																			//classe figlia di train
 {	public:
 	Regionale();																						//costruttore di dafault
-	Regionale(int, int, int, int, bool, int, int);														//costruttore
+	Regionale(int, bool, int, std::vector<int>);														//costruttore
 protected:
 			
 	bool constrain() override{ 																			//sovrascrivo la classe constrain
@@ -18,7 +18,7 @@ protected:
 		return true;
 	}
 };
-Regionale::Regionale(int v, int p, int time, int id, bool direzione,int orarioPart, int posStazioneIniziale) : Train(v, p, time, id, direzione, orarioPart, posStazioneIniziale) {
+Regionale::Regionale(int id, bool direzione, int p,std::vector<int> OrariTreno) : Train(id, direzione, p, OrariTreno) {
 	ident = 0;
 }
 

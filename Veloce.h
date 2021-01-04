@@ -9,7 +9,7 @@ class Veloce : public Train																			//classe figlia di train
 {
 public:
 	Veloce();																						//costruttore di dafault
-	Veloce(int, int, int, int, bool, int, int);														//costruttore
+	Veloce(int, bool, int, std::vector<int>);														//costruttore
 protected:
 
 
@@ -22,7 +22,7 @@ protected:
 	}
 
 };
-Veloce::Veloce(int v, int p, int time, int id, bool direzione,int orarioPart, int posStazioneIniziale) : Train(v, p, time, id, direzione, orarioPart, posStazioneIniziale) {
+Veloce::Veloce(int id, bool direzione, int p, std::vector<int> OrariTreno) : Train(id, direzione, p, OrariTreno) {
 	ident = 1;
 }
 

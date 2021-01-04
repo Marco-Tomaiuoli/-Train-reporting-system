@@ -11,9 +11,9 @@ void Train::stazioneIncrement(int posNextStat)
 
 }
 
-int Train::getOrarioPartenza() const
+std::vector<int> Train::getOrari() const
 {
-	return OrarioPart;
+	return Orari;
 }
 
 int Train::getParkTime()
@@ -40,21 +40,20 @@ Train::Train() {
 	stand = 0;
 	dir = true;
 	id = 0;
-	OrarioPart = 0;
 	nextStation = 0;
 	LastStation = 0;
 	parkTime = -1;
 }
-Train::Train(int v, int p, int time, int id, bool direzione,int orarioPart,int posStazioneIniziale) {
-	setSpeed(static_cast <double>(v));
+Train::Train(int id, bool direzione, int p, std::vector<int> OrariTreno) {
+	setSpeed(static_cast <double>(80));
 	setPosition(static_cast <double>(p));
 	dir = direzione;
-	t = time;
+	t = OrariTreno[0];
 	stand = 0;
 	this->id = id;
-	OrarioPart = orarioPart;
-	nextStation = posStazioneIniziale;
-	LastStation = posStazioneIniziale;
+	Orari = OrariTreno;
+	nextStation = pos;
+	LastStation = pos;
 	parkTime = -1;
 
 }

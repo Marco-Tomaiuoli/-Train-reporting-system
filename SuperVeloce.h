@@ -9,7 +9,7 @@ class SuperVeloce : public Train																			//classe figlia di train
 {
 public:
 	SuperVeloce();																							//costruttore di dafault
-	SuperVeloce(int, int, int, int, bool, int, int);														//costruttore
+	SuperVeloce(int, bool, int, std::vector<int>);														//costruttore
 protected:
 
 	bool constrain() override {															//sovrascrivo la classe constrain
@@ -22,7 +22,7 @@ protected:
 	}
 
 };
-SuperVeloce::SuperVeloce(int v, int p, int time, int id, bool direzione, int orarioPart, int posStazioneIniziale) : Train(v, p, time, id, direzione,orarioPart,posStazioneIniziale) {
+SuperVeloce::SuperVeloce(int id, bool direzione, int p, std::vector<int> OrariTreno) : Train( id, direzione,p, OrariTreno) {
 	ident = 2;
 }
 

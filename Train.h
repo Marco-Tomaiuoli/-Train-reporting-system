@@ -39,7 +39,7 @@ public:
 	
 	void stazioneIncrement(int posNextStat);						//increemnta la next stazione	
 	
-	int getOrarioPartenza() const;									//restituisce l'orario di partenza
+	std::vector<int> getOrari() const;									//restituisce l'orario di partenza
 
 	int getParkTime();												//restituisce l'orario di partenza
 	void setParkTime(int);											//imposta l'orario di partenza
@@ -47,7 +47,7 @@ public:
 
 protected:
 	Train();														//costruttori vuoti(sono virtuali) 
-	Train(int, int, int, int, bool, int, int);
+	Train(int, bool, int, std::vector<int>);
 	//ATTENZIONE IL DISTRUTTORE DI DEFAULT VA BENE PER TUTTE LE CLASSI ANCHE FIGLIE
 	double vel;														//velocità
 	double pos;														//posizione : disrtanza dalla prima stazione
@@ -59,8 +59,7 @@ protected:
 	int nextStation;												//posizione della prossima stazione
 	int LastStation;												//posizione della stazione precedente	
 	int parkTime;													//tempo di parcheggio nella stazione attuale	
-	int OrarioPart;													//orario di partenza	
-	
+	std::vector<int> Orari;												//orari 
 	virtual bool constrain() = 0;									//funzione che definisce le condizioni della velocità
 
 	private:
