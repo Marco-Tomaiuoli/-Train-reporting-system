@@ -74,6 +74,10 @@ void DepositoTreni::set_speed(int priority, double new_speed) {
 
 }
 
+bool DepositoTreni::check_binario(Stazione* station, bool direzione) {
+	return(station->is_arriving(direzione));
+}
+
 
 
 

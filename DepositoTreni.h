@@ -9,6 +9,7 @@
 #include <queue>
 #include <vector>
 #include "Train.h"
+#include "Stazione.h"
 
 
 class DepositoTreni {
@@ -25,6 +26,7 @@ public:
 	Train* elimina_treno();								//fa partire un treno dal deposito
 	void print(int);									//stampa i treni dello stesso tipo del deposito
 	void set_speed(int, double);						//modifica la velocità del treno in partenza
+	bool check_binario(Stazione*, bool);
 };
 #endif 
 
