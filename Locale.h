@@ -9,9 +9,10 @@ class Locale : public Principale
 {
 public:
 	Locale(std::string, int);
-	bool is_arriving(bool, int) override;
+	int is_arriving(bool, int) override;
 private:
 	int fast_platform_gone;
 	int fast_platform_back;
+	std::vector <int> stocazzo;
 };
 #endif

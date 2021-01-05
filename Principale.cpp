@@ -89,9 +89,8 @@ void Principale::change_back(int num_binario)
         come_back[num_binario] = 0;
 }
 
-bool Principale::is_arriving(bool andata_o_ritorno, int nullo)
+int Principale::is_arriving(bool andata_o_ritorno, int nullo)
 {
-    bool fatto = false;
     int pos = -1;
     if (is_it_free(andata_o_ritorno))
     {
@@ -102,7 +101,6 @@ bool Principale::is_arriving(bool andata_o_ritorno, int nullo)
                 if (gone[i] == 0)
                 {
                     pos = i;
-                    fatto = true;
                     break;
                 }
             }
@@ -114,12 +112,11 @@ bool Principale::is_arriving(bool andata_o_ritorno, int nullo)
                 if (come_back[i] == 0)
                 {
                     pos = i;
-                    fatto = true;
                     break;
                 }
             }
         }
     }
     change_status(andata_o_ritorno, pos);
-    return fatto;
+    return pos;
 }

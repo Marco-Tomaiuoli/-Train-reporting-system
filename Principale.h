@@ -8,7 +8,7 @@ class Principale : public Stazione {
 public:
     Principale(std::string);
     Principale(std::string, int);
-    virtual bool is_arriving(bool, int) override;
+    virtual int is_arriving(bool, int) override;
     bool is_it_free(bool) override; //prende in input 0 se treno in andata, 1 se treno in ritorno; dice se c'è almeno un binario libero
     void change_status(bool, int);
 

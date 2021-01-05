@@ -9,25 +9,29 @@ Locale::Locale(string name, int distance)
     fast_platform_back = 0;
 }
 
-bool Locale::is_arriving(bool gone_or_return, int priority)
+int Locale::is_arriving(bool gone_or_return, int priority)
 {
-    bool done = false;
+    int rit = -1;
     if (priority == 1 || priority == 2)
     {
         if(gone_or_return)//andata 
         {
-            if(fast_platform_gone == 0)
-               fast_platform_gone = 1;
+            if (fast_platform_gone == 0)
+            {
+                fast_platform_gone = 1;
+                rit = 2;
+            }
         }else if(!gone_or_return)//ritorno
         {
-            if(fast_platform_back == 0)
+            if (fast_platform_back == 0)
+            {
                 fast_platform_back = 1;
+                rit = 2;
+            }
         }
-        done = true;    //il treno veloce o superveloce non si ferma alle stazioni e il binario veloce è sempre libero, di conseguenza lo lascio passare
     }
     else if (priority == 0)
     {
-        int pos = -1;
         if (is_it_free(gone_or_return))
         {
             if (gone_or_return)//andata
@@ -36,8 +40,7 @@ bool Locale::is_arriving(bool gone_or_return, int priority)
                 {
                     if (gone[i] == 0)
                     {
-                        pos = i;
-                        done = true;
+                        rit = i;
                         break;
                     }
                 }
@@ -48,14 +51,13 @@ bool Locale::is_arriving(bool gone_or_return, int priority)
                 {
                     if (come_back[i] == 0)
                     {
-                        pos = i;
-                        done = true;
+                        rit = i;
                         break;
                     }
                 }
             }
         }
-        change_status(gone_or_return, pos);
+        change_status(gone_or_return, rit);
     }
-    return done;
+    return rit;
 }
