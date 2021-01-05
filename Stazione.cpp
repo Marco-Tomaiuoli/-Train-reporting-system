@@ -10,4 +10,4 @@ Stazione::Stazione(string nome, int distanza)
 
 std::string Stazione::get_name() { return  name; }
 int Stazione::get_distance() { return distance_from_first; }
-bool Stazione::isLocal(){return isLocale;}
+bool Stazione::is_local(){return isLocale;}
