@@ -4,6 +4,7 @@ using namespace std;
 Principale::Principale(std::string name)    //costruttore per la Prima stazione
     :Stazione(name, 0)
 {
+    isLocale = false;
     for (int i = 0; i < num_binari; i++)
     {
         gone.push_back(0);
@@ -14,6 +15,7 @@ Principale::Principale(std::string name)    //costruttore per la Prima stazione
 Principale::Principale(std::string name, int distance)
     :Stazione(name, distance)
 {
+    isLocale = false;
     for (int i = 0; i < num_binari; i++)
     {
         gone.push_back(0);
@@ -21,11 +23,11 @@ Principale::Principale(std::string name, int distance)
     }
 }
 
-//ritorna se c'è un binario libero
+//ritorna se c'Ã¨ un binario libero
 bool Principale::is_it_free(bool andata_o_ritorno)
 {
     bool ret = false;
-    if (!andata_o_ritorno)//andata
+    if (andata_o_ritorno)//andata
     {
         for (int i = 0; i < num_binari; i++)
         {
@@ -36,7 +38,7 @@ bool Principale::is_it_free(bool andata_o_ritorno)
             }
         }
     }
-    else if (andata_o_ritorno)//ritorno
+    else if (!andata_o_ritorno)//ritorno
     {
         for (int i = 0; i < num_binari; i++)
         {
@@ -57,11 +59,11 @@ void Principale::change_status(bool andata_o_ritorno, int num_binario)
     {
         return;
     }
-    if (andata_o_ritorno == 0)  //andata
+    if (andata_o_ritorno)  //andata
     {
         change_gone(num_binario);
     }
-    else if(andata_o_ritorno == 1) //ritorno
+    else if(!andata_o_ritorno) //ritorno
     {
         change_back(num_binario);
     }
@@ -87,13 +89,13 @@ void Principale::change_back(int num_binario)
         come_back[num_binario] = 0;
 }
 
-bool Principale::is_arriving(bool andata_o_ritorno)
+bool Principale::is_arriving(bool andata_o_ritorno, int nullo)
 {
     bool fatto = false;
     int pos = -1;
     if (is_it_free(andata_o_ritorno))
     {
-        if (!andata_o_ritorno)//andata
+        if (andata_o_ritorno)//andata
         {
             for (int i = 0; i < num_binari; i++)
             {
@@ -105,7 +107,7 @@ bool Principale::is_arriving(bool andata_o_ritorno)
                 }
             }
         }
-        else if (andata_o_ritorno)//ritorno
+        else if (!andata_o_ritorno)//ritorno
         {
             for (int i = 0; i < num_binari; i++)
             {
