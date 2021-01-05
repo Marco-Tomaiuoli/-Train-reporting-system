@@ -16,7 +16,7 @@ public:
     virtual bool is_it_free(bool) = 0; //prende in input 0 se treno in andata, 1 se treno in ritorno; dice se c'è almeno un binario libero
     bool is_local();
     virtual bool present_train() = 0;
-    virtual bool is_it_free(bool) override;
+    virtual bool is_it_free(bool);
 protected:
     Stazione(std::string, int);
     int distance_from_first;                  //distance from first; DISTANZA DALLA PRIMA STAZIONE
