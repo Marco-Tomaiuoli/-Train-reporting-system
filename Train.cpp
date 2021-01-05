@@ -7,7 +7,7 @@
 void Train::stazioneIncrement(int posNextStat)
 {
 	LastStation = nextStation;
-	nextStation = pos;
+	nextStation = posNextStat;
 
 }
 
@@ -113,7 +113,7 @@ double Train::getPosition() const
 void Train::setPosition(double p)
 {
 	pos = p;
-	if (pos < 0)
+	if (pos < -5)
 		throw  IllegalArgument();
 }
 
