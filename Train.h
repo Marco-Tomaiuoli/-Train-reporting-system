@@ -16,11 +16,11 @@ public:
 
 	bool isArrived(std::vector<int> stazioni);						// vero se è arrivato
 
-	double getSpeed() const;										//ritora la velocià
-	void setSpeed(double v);										//set velocià
+	float getSpeed() const;										//ritora la velocià
+	void setSpeed(float v);										//set velocià
 	
-	double getPosition() const;									//get posizione	
-	void setPosition(double p);									//set posizione	
+	float getPosition() const;									//get posizione	
+	void setPosition(float p);									//set posizione	
 	
 	int whIsStand() const;											//Where is Standing : In che posizione è
 	
@@ -43,8 +43,8 @@ public:
 	
 	std::vector<int> getOrari() const;								//restituisce l'orario di partenza
 
-	int getParkTime();												//restituisce l'orario di partenza
-	void setParkTime(int);											//imposta l'orario di partenza
+	int getParkTime();												//restituisce l'orario parcheggio
+	void setParkTime(int);											//imposta l'orario parcheggio
 	void decremetParkTime();										//Riduce di 1 il tempo di parcheggio
 
 	int getNextStation();
@@ -56,8 +56,8 @@ protected :
 	Train();														//costruttori vuoti
 	Train(int, bool, int, std::vector<int>);
 	//ATTENZIONE IL DISTRUTTORE DI DEFAULT VA BENE PER TUTTE LE CLASSI ANCHE FIGLIE
-	double vel;														//velocità
-	double pos;														//posizione : disrtanza dalla prima stazione
+	float vel;														//velocità
+	float pos;														//posizione : disrtanza dalla prima stazione
 	bool dir;														//direzione  true da inizio a capolinea, false da capolinea ad inizio	
 	int t;															//tempo
 	int ident;														//identificatore : 0 Regionale 1 Veloce 2 SuperVeloce
@@ -70,7 +70,7 @@ protected :
 	
 	
 	private:
-		double lastSegn = -100;										//dato utile per inviare una unica segnalazione ad ongi stazione -100 è un numero non valido
+		float lastSegn;										//dato utile per inviare una unica segnalazione ad ongi stazione -100 è un numero non valido
 
 };
 

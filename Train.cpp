@@ -58,7 +58,7 @@ Train::Train(int id, bool direzione, int p, std::vector<int> OrariTreno) {
 	if (OrariTreno.size() <= 0)
 		throw IllegalArgument();
 	setSpeed(80.00);
-	setPosition(static_cast <double>(p));
+	setPosition(static_cast <float>(p));
 	dir = direzione;
 	t = OrariTreno[0];
 	stand = 0;
@@ -67,6 +67,10 @@ Train::Train(int id, bool direzione, int p, std::vector<int> OrariTreno) {
 	nextStation = pos;
 	LastStation = pos;
 	parkTime = -1;
+	if (direzione)
+		lastSegn = p - 30;
+	else
+		lastSegn = p + 30;
 
 }
 
@@ -75,11 +79,11 @@ bool Train::move(int time, int v, const std::vector<int> stazioni)
 	if (v == -1)
 		setSpeedMax();
 	else
-	setSpeed(static_cast <double>(v));
+	setSpeed(static_cast <float>(v));
 	if (dir == true)
-		pos += v * ((time - t) / static_cast<double>(60));
+		pos += v * ((time - t) / static_cast<float>(60));
 	else
-		pos -= v * ((time - t) / static_cast<double>(60));
+		pos -= v * ((time - t) / static_cast<float>(60));
 	t = time;
 
 	stand = -1;
@@ -95,22 +99,22 @@ bool Train::isArrived(std::vector<int> stazioni)
 	else false;
 }
 
-double Train::getSpeed() const
+float Train::getSpeed() const
 {
 	return vel;
 }
 
-void Train::setSpeed(double v)
+void Train::setSpeed(float v)
 {
 	vel = v;
 }
 
-double Train::getPosition() const
+float Train::getPosition() const
 {
 	return pos;
 }
 
-void Train::setPosition(double p)
+void Train::setPosition(float p)
 {
 	pos = p;
 	if (pos < -5)
@@ -134,12 +138,12 @@ bool Train::getDir() const
 
 bool Train::segnalazione(const std::vector<int> stazioni) {
 	if (getDir() == true) {
-		if ((pos - lastSegn) < 10.00)
+		if ((pos - lastSegn) < 20.00)
 			return false;
 		for (int i = 0; i < stazioni.size(); i++) {
 
 			if ((pos < stazioni[i])) {
-				if (pos >= (stazioni[i] - 10))
+				if (pos >= (stazioni[i] - 20))
 				{
 					lastSegn = pos;
 					return true;
@@ -151,11 +155,11 @@ bool Train::segnalazione(const std::vector<int> stazioni) {
 		}
 	}
 	else {
-		for (int i = stazioni[stazioni.size() - 1]; i > 0; i--) {
-			if ((lastSegn - pos) < 10.00)
+		for (int i = stazioni.size() - 1; i > 0; i--) {
+			if ((lastSegn - pos) < 20.00)
 				return false;
 			if ((pos > stazioni[i])) {
-				if (pos <= stazioni[i] + 10)
+				if (pos <= stazioni[i] + 20)
 				{
 					lastSegn = pos;
 					return true;
@@ -176,7 +180,7 @@ int Train::getId() const
 
 void Train::parcheggia(bool inStation, int p)
 {
-	setPosition(static_cast <double>(p));
+	setPosition(static_cast <float>(p));
 	if (inStation)
 		stand = 0;
 	else
