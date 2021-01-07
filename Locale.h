@@ -13,6 +13,5 @@ public:
 private:
 	int fast_platform_gone;
 	int fast_platform_back;
-	std::vector <int> stocazzo;
 };
 #endif

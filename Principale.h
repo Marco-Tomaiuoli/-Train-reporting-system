@@ -11,6 +11,7 @@ public:
     virtual int is_arriving(bool, int) override;
     bool is_it_free(bool) override; //prende in input 0 se treno in andata, 1 se treno in ritorno; dice se c'è almeno un binario libero
     void change_status(bool, int);
+    virtual bool present_train(bool) override;
 
 protected:
     //prende in input 0 se treno in andata, 1 se treno in ritorno; cambia lo stato del binario

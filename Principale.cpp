@@ -81,9 +81,9 @@ void Principale::change_gone(int num_binario)
 
 void Principale::change_back(int num_binario)
 {
-    if (come_back[num_binario] == 1)
+    if (come_back[num_binario] == 0)
     {
-        come_back[num_binario] = 0;
+        come_back[num_binario] = 1;
     }
     else if (come_back[num_binario] == 1)
         come_back[num_binario] = 0;
@@ -119,4 +119,32 @@ int Principale::is_arriving(bool andata_o_ritorno, int nullo)
     }
     change_status(andata_o_ritorno, pos);
     return pos;
+}
+
+bool Principale::present_train(bool andata_o_ritorno)
+{
+    bool ret = false;
+    if (andata_o_ritorno)//andata
+    {
+        for (int i = 0; i < num_binari; i++)
+        {
+            if (gone[i] == 1)
+            {
+                ret = true;
+                break;
+            }
+        }
+    }
+    else if (!andata_o_ritorno)//ritorno
+    {
+        for (int i = 0; i < num_binari; i++)
+        {
+            if (come_back[i] == 1)
+            {
+                ret = true;
+                break;
+            }
+        }
+    }
+    return ret;
 }
