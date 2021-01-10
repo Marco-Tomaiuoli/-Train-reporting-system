@@ -178,23 +178,3 @@ void LineaFerroviaria::lastDelay(Train* t)
 	 
 }
 
-int main()
-{
-	std::vector<int> orari_1{ 0, 3600 };
-	Veloce* treno_1 = new Veloce(342, 1, 0, orari_1);
-	
-	std::list<Train*> lista_treni;
-	lista_treni.push_back(treno_1);
-	std::cout << "Legen" << std::endl;
-	std::cout << "Wait for it..."<<std::endl;
-	
-	LineaFerroviaria lf;
-	lf.inStazione(lista_treni);
-	lf.trenoInPartenza(lista_treni);
-	std::cout << "dary" << std::endl;
-	delete treno_1;
-	return 0;
-}
-//...
-	//treniDaStazioneAtranisto.push_front(treno che esce)
-	//quando faccio l'erase mi salvo il tempo_ultimo_treno e lo sommo ai tempi dei treni della lista  
