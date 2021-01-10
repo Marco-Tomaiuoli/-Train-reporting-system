@@ -17,10 +17,10 @@ protected:
     //prende in input 0 se treno in andata, 1 se treno in ritorno; cambia lo stato del binario
     class busy_platform {};
 
-    std::vector<int> gone;
-    std::vector<int> come_back;
+    constexpr static int num_binari = 2;
+    int gone[num_binari];
+    int come_back[num_binari];
     void change_gone(int);
     void change_back(int);
-    constexpr static int num_binari = 2;
 };
 #endif

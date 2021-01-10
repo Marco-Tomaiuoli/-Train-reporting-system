@@ -7,8 +7,8 @@ Principale::Principale(std::string name)    //costruttore per la Prima stazione
     isLocale = false;
     for (int i = 0; i < num_binari; i++)
     {
-        gone.push_back(0);
-        come_back.push_back(0);
+        gone[i] = 0;
+        come_back[i] = 0;
     }
 }
 
@@ -18,8 +18,8 @@ Principale::Principale(std::string name, int distance)
     isLocale = false;
     for (int i = 0; i < num_binari; i++)
     {
-        gone.push_back(0);
-        come_back.push_back(0);
+        gone[i] = 0;
+        come_back[i] = 0;
     }
 }
 
