@@ -1,29 +1,8 @@
 #include "LineaFerroviaria.h"
-void LineaFerroviaria::creaLineaFerroviaria()
-{
-	Locale* st_1 = new Locale("Altavilla", 3);
-	stazioni.push_back(st_1);
-	Principale* st_2 = new Principale("Vicenza", 20);
-	stazioni.push_back(st_2);
-	DepositoTreni* dt_1 = new DepositoTreni();
-	st_1->is_arriving(0, 0);
-}
 
-int LineaFerroviaria::getIndexStazione(int distanza)
-{ 
-	std::vector <int> posizioneStazioni{ 0, 1, 2, 3, 4, 5, 6, 7, 8 };
-	for (int i = 0; i < posizioneStazioni.size(); i++) 
-	{ 
-		if (posizioneStazioni[i] == distanza)             
-			return i; 
-	}
-	throw IllegalArgument();     
-	return 0; 
-}
-
-void LineaFerroviaria::inStazione(std::list<Train*> treni_in_stazione)
+void LineaFerroviaria::inStazione()
 {
-	auto it = treni_in_stazione.begin();
+	auto it = InStazione.begin();
 
 	if ((*it)->getParkTime() == -1)
 	{
@@ -41,9 +20,10 @@ void LineaFerroviaria::inStazione(std::list<Train*> treni_in_stazione)
 	else {
 		(*it)->decremetParkTime();
 	}
+	trenoInPartenza(InStazione);
 }
 
-void LineaFerroviaria::trenoInPartenza(std::list<Train*> leaving_train)
+void LineaFerroviaria::trenoInPartenza(std::list<Train*>& leaving_train)
 {
 	auto it = leaving_train.begin();
 	
@@ -56,10 +36,9 @@ void LineaFerroviaria::trenoInPartenza(std::list<Train*> leaving_train)
 			to_continue = false;
 		}
 	}
-	lastDelay((*it));
 }
 
-void LineaFerroviaria::let_the_train_start(std::list<Train*> leaving_train)
+void LineaFerroviaria::let_the_train_start(std::list<Train*>& leaving_train)
 {
 	Locale* st1 = new Locale("Vi", 10);
 	stazioni.push_back(st1);
@@ -119,48 +98,6 @@ Train* LineaFerroviaria::get_train(std::list<Train*>& leaving_train, int stazion
 	return ritorno;
 }
 
-void LineaFerroviaria::exitFromStation(Train* t)
-{ 
-	daStazioneInTransito.push_front(t);
-	incrementaLaStazione(t);
-	int i = getIndexStazione(t->getLastStation());
-	std::cout << "Il treno " << t->getId() << " esce dalla sazione " << stazioni[i]->get_name() << " alle ";
-	//print_time(time);
-	//gestioneRitardo(t, i);
-	std::cout << std::endl;
-}
-
-void LineaFerroviaria::incrementaLaStazione(Train* t)
-{
-	bool change = false;
-
-	if (t->getDir()) {
-		for (int i = 0; i < posizioneStazioni.size() - 1 && change == false; i++) {
-			if (t->getNextStation() == posizioneStazioni[i]) {
-				t->stazioneIncrement(posizioneStazioni[i + 1]);
-				change = true;
-			}
-		}
-		if (change == false) {
-			t->stazioneIncrement(posizioneStazioni[(posizioneStazioni.size() - 1)]);
-			change = true;
-		}
-	}
-	else {
-		for (int i = posizioneStazioni.size() - 1; i > 0 && change == false; i--) {
-
-			if (t->getNextStation() == posizioneStazioni[i]) {
-				t->stazioneIncrement(posizioneStazioni[i - 1]);
-				change = true;
-			}
-		}
-		if (change == false) {
-			t->stazioneIncrement(posizioneStazioni[0]);
-			change = true;
-		}
-	}
-}
-
 void LineaFerroviaria::lastDelay(Train* t)
 {
 	std::cout << "Il treno " << t->getId();
@@ -170,11 +107,10 @@ void LineaFerroviaria::lastDelay(Train* t)
 	delay = time - schedule;
 	if (delay <= 0)
 	{
-		std::cout << " e' in orario\n"<<std::endl;
+		std::cout << " e' in orario\n" << std::endl;
 	}
 	else {
 		std::cout << " e' in ritardo di " << delay << " minuti.\n" << std::endl;
 	}
-	 
-}
 
+}
