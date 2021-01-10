@@ -311,16 +311,3 @@ int LineaFerroviaria::orario_inizio() {
 	return cont - 1;
 }
 
-void LineaFerroviaria::occupaSegnala(Stazione* s, Train* t, bool d)														//funzione che occupa un binario della stazione e lo stampa
-{
-	int a = s->is_arriving(d, t->getIdentificator());//riceve il numero della stazione 1 o 2
-
-	cout << "La stazione " << s->get_name() << " segnala al treno " << t->getId() << " di parcheggiarsi al binario ";	//stampa in standard output
-	if (d)																												// se la direzione è positiva
-		cout << a << endl;																								//stampa il numero dinario
-	else
-		cout << a + 2 << endl;																							//stampa il numero dinario
-}
-
-
-
