@@ -16,22 +16,23 @@ void LineaFerroviaria::start()
 	
 	
 	//lettura file
-
+	spawnTreno();
 	while (!allTreniArrived()) {
 		//TODO : finisci la funzione start
 		time++;
 
-		//faiPartireTreno();
+		
 
 		DaStazioneAInTransito();
 		AvanzaTreniInTransito();
 		DaDepositoAStazione();
 
-		gestione_depositi();
+		// ADD gestione_depositi();
 		//InStazione();
 
 
 		updateliste();
+		spawnTreno();
 	}
 
 
@@ -41,29 +42,58 @@ void LineaFerroviaria::start()
 
 }
 
-LineaFerroviaria::~LineaFerroviaria()
+void LineaFerroviaria::spawnTreno()
 {
-	for (int i = 0; i < inTransito.size(); i++)
-		delete inTransito[i];
-	for (auto it = stazioni.begin(); it != stazioni.end(); it++) {
-		delete (*it);
-	}
-	inTransito.clear();
-	UPDATEinTransito.clear();
-	Orari.clear();
-	posizioneStazioni.clear();
-	stazioni.clear();
-	UPDATEinDeposito.clear();
-	UPDATEinStazione.clear();
-	treni.clear();
-	inDeposito.clear();
-	UPDATEdaDepositoInStazione.clear();
-	daDepositoInStazione.clear();
-	inStazione.clear();
-	daStazioneInTransito.clear();
-
 	
+	for (auto it = treni.begin(); it != treni.end(); it++) {	
+		if(time<1440){
+		if(time == (*it)->getOrari()[0]){
+			if((*it)->getDir())
+				if (stazioni[0]->is_it_free(true)) {
+				
+						occupaSegnala(stazioni[0], (*it), true);								//occupa un binario e ricevi la segnalazione della stazione
+						avvisoArrivo((*it));																			//stampa in standard Arrivo di un treno in stazione
+						inStazione.push_back((*it));
+				}
+				else{
+					(*it)->setPosition(-5);
+					inDeposito.push_back(*it);}
+		}			
+				
+			else{
+				if (stazioni[stazioni.size()-1]->is_it_free(false)){
+					occupaSegnala(stazioni[stazioni.size() - 1], (*it), false);								//occupa un binario e ricevi la segnalazione della stazione
+					avvisoArrivo((*it));																			//stampa in standard Arrivo di un treno in stazione
+					inStazione.push_back((*it));}
+				else {
+					(*it)->setPosition(posizioneStazioni[posizioneStazioni.size()-1]+5);
+					inDeposito.push_back(*it);
+				}
+			}
+		}
+	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 void LineaFerroviaria::muoviStampa(Train* t, int v)																//funzione che gestisce il move
 {
@@ -108,8 +138,8 @@ void LineaFerroviaria::avvisoArrivo(Train* t)																	//funzione stampa 
 {	
 	int index = getIndexStazione(t->getNextStation());															//calcola l'indice della stazione
 	cout << "Il Treno numero " << t->getId() << " è arrivato nalla stazione " << stazioni[index]->get_name();	//stampa in standard output
-	cout << " all'orario ";																						//stampa in standard output
-	print_time(time);																							//stampa in standard output
+	// ADD cout << " all'orario "<< print_time(time);;																						//stampa in standard output
+																							
 	gestioneRitardo(t, index);																					//stampa in standard output ritatdo e lo gestisce
 	cout << endl;
 }
@@ -336,18 +366,12 @@ void LineaFerroviaria::exitFromStation(Train* t)//funzione che si usa quando un 
 	incrementaLaStazione(t);																			//incremento la nextStazione del treno uscito dalla stazione
 	t->setTime(time);																					//aggiorna il tempo del treno
 	int i = getIndexStazione(t->getLastStation());														//calcola l'indice stazione
-	cout << "Il treno "<<t->getId()<<" esce dalla sazione " << stazioni[i]->get_name() << " alle ";		//stampa in standard output
-	print_time(time);																					//stampa l'ora in modo ordinato
+	// ADD cout << "Il treno "<<t->getId()<<" esce dalla sazione " << stazioni[i]->get_name() << " alle ore "<< print_time(time); ;		//stampa in standard output
+																			
 	//gestioneRitardo(t,i);
 	cout << endl;
 }
 
-void LineaFerroviaria::print_time(int time) {
-	int ore = time / 60;
-	int minuti = time - (60 * 3);
-	cout << "ore: " << ore << ":" << minuti;
-
-}
 
 int LineaFerroviaria::getIndexStazione(int distanza)												//calocla l'indice della stazione sapendo la posizione
 {

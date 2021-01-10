@@ -16,7 +16,7 @@ public:
 	void start();
 
 private:
-
+	void spawnTreno();
 	void DaStazioneAInTransito();
 	void AvanzaTreniInTransito();
 	void DaDepositoAStazione();	
@@ -54,7 +54,7 @@ private:
 	static bool SpeedIsGood(Train*,int);
 	static void sortTrain(std::vector < Train*>&);
 	void incrementaLaStazione(Train*);
-	static void printTrain(Train* t);
+	static void printTrain(Train*);
 	static void sumList(std::list<Train*>&, std::list<Train*>&);
 	static void sumVector(std::vector<Train*>&, std::vector<Train*>&);
 	void gestioneRitardo(Train*, int);
