@@ -43,14 +43,10 @@ private:
 	std::list<Train*> inStazione;											//contenitore dei treni in stazione
 	std::list<Train*> daDepositoInStazione;									//contenitore dei treni che stanno andando dalla stazione al deposito
 	std::list<Train*> daStazioneInTransito;									//contenitore dei treni che stanno partendo dalla stazione
-	//void AvanzaTreniInTransito();
-
-public:
-	~LineaFerroviaria();													//distruttore
 	void openStation(std::string);											//legge il file delle stazioni e crea i vector di stazini e distanze
 	void openTrain(std::string);											//legge il file dei treni e crea la lista contenente i treni che devono partire
 	int count_train(std::string);											//conta il numero dei treni 
-	int add_time(int, int, int, int);													//modifica il valore del tempo nel caso sia sbagliato
+	int add_time(int, int, int, int);										//modifica il valore del tempo nel caso sia sbagliato
 	int check_speed(int);													//mette la velocità max del treno in base a che tipo è il treno
 	void treni_in_deposito();												//aggiorna il deposito facendo uscire i treni 
 	void posiziona_treni();													//aggiunge nel deposito i treni che devono entrare nel deposito
@@ -65,17 +61,34 @@ public:
 	std::string cambia_tipo(int);											//funzione che converte il tipo int in tipo string
 	std::string stampa_orari(std::vector<int>);								//funzione che unifica tutti gli otari in un'unica stringa
 	std::vector<int> somma_orari(std::vector<int>);							//somma l'orario di partenza con quello di arrivo alle varie stazioni
+
+	void AvanzaTreniInTransito();
+	void DaStazioneAInTransito();
+	void DaDepositoAStazione();
+	void updateliste();
 	void occupaSegnala(Stazione*, Train*, bool);
-	/*void in_Stazione(std::list<Train*>);
-	int getIndexStazione(int);
-	void trenoInpartenza(std::list<Train*>);
-	Train* get_train(std::list<Train*>, int, std::list<Train*>::iterator);
+	void avvisoArrivo(Train*);
+	void allTreniArrived();
+	void spawnTreno();
 	void exitFromStation(Train*);
+	int getIndexStazione(int);
+	void muoviStampa(Train*, int);
+	static bool SpeedIsGood(Train*, int);
+	static void sortTrain(std::vector<Train*>&);
 	void incrementaLaStazione(Train*);
-	void let_the_train_start(std::list<Train*>);
-	void creaLineaFerroviaria();*/
+	static void printTrain(Train*);
+	static void sumList(std::list<Train*>&, std::list<Train*>&);
+	static void sumVector(std::vector<Train*>&, std::vector<Train*>&);
+	void gestioneRitardo(Train*, int);
 
-
+	void in_Stazione();
+	void trenoInpartenza(std::list<Train*>&);
+	Train* get_train(std::list<Train*>&, int, std::list<Train*>::iterator&);
+	void let_the_train_start(std::list<Train*>&);
+	void lastDelay(Train*);
+public:
+	~LineaFerroviaria();													//distruttore
+	void start();
 };
 #endif 
 
