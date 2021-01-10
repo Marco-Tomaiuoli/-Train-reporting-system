@@ -9,8 +9,8 @@ class SuperVeloce : public Train																			//classe figlia di train
 {
 public:
 	SuperVeloce();																							//costruttore di dafault
-	SuperVeloce(int, bool, int, std::vector<int>);											//costruttore
-	void setSpeedMax() override;
+	SuperVeloce(int, bool, int, std::vector<int>);															//costruttore
+	void setSpeedMax() override;																			//sovrastrivi la classe
 
 
 };

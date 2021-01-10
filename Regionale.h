@@ -10,7 +10,7 @@ class Regionale : public Train																			//classe figlia di train
 public:
 	Regionale();																						//costruttore di dafault
 	Regionale(int, bool, int, std::vector<int>);														//costruttore
-	void setSpeedMax() override;
+	void setSpeedMax() override;															//sovrastrivi la classe
 
 };
 
