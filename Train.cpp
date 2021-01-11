@@ -81,9 +81,9 @@ Train::Train(int id, bool direzione, int p, std::vector<int> OrariTreno) {		//co
 	LastStation = pos;															//l'ultima stazione visitata è la prima in posizione pos
 	parkTime = -1;																//il treno inizialmente imposta il tempo di parcheggio con un valore nullo
 	if (direzione)																// se la direzione è postiva
-		lastSegn = p - 30;														//poni l'ulima segnalazione fatta a -30 km
+		lastSegn = p - 25;														//poni l'ulima segnalazione fatta a -30 km
 	else
-		lastSegn = p + 30;														//poni l'ulima segnalazione fatta a -30 km
+		lastSegn = p + 25;														//poni l'ulima segnalazione fatta a -30 km
 	ritardo = 0;
 
 }
@@ -112,9 +112,9 @@ void Train::setTime(int time)															//aggiorna tempoo
 
 bool Train::isArrived(std::vector<int> stazioni)															//funzione che controlla se il treno è arrivato
 {
-	if (dir && pos >= stazioni[stazioni.size() - 1])														//se la direzione è positiva e il treno è alla stazione finale
+	if (dir && pos >= stazioni[stazioni.size() - 1] && LastStation!=nextStation)														//se la direzione è positiva e il treno è alla stazione finale
 		return true;
-	else if (!dir && pos <= 0)																				// senno se il treno è alla stazione iniziale(ricontrolla la direzione perchè il treno con direzione positiva pèotrebbe essere nel deposito dietro la prima stazione)
+	else if (!dir && pos <= 0 && LastStation != nextStation)																				// senno se il treno è alla stazione iniziale(ricontrolla la direzione perchè il treno con direzione positiva pèotrebbe essere nel deposito dietro la prima stazione)
 		return true;
 	else false;
 }
@@ -157,9 +157,10 @@ bool Train::getDir() const															// get direzione
 }
 
 bool Train::segnalazione() {																							//funzione per la segnalazione
-	if (static_cast<float>(lastSegn - pos) < 20.00f)																	//se è stato segnalato già meno di km fa
-		return false;
-	if (getDir() == true) {																								//se la direzione è positiva
+
+	if (getDir() == true) {	
+		if (static_cast<float>(pos - lastSegn) < 20.00f)																	//se è stato segnalato già meno di km fa
+			return false;
 		if (pos >= (static_cast<float>(nextStation) - static_cast < float>(20)))										//il treno è a meno di km dalla prossima stazione
 		{
 			lastSegn = pos;																								//pongo last segnalazione = alla poszione in questo momento
@@ -169,6 +170,8 @@ bool Train::segnalazione() {																							//funzione per la segnalazion
 					return false;
 	}
 	else {
+		if (static_cast<float>( lastSegn - pos ) < 20.00f)																	//se è stato segnalato già meno di km fa
+		return false;
 		if (pos <= static_cast<float>(nextStation + 20))															//il treno è a meno di km dalla prossima stazione
 		{
 			lastSegn = pos;																							//pongo last segnalazione = alla poszione in questo momento

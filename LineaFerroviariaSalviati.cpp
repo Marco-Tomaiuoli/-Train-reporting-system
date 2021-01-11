@@ -5,92 +5,85 @@
 
 using namespace std;
 
-LineaFerroviaria::LineaFerroviaria()
-{	
-	
-	
+LineaFerroviaria::LineaFerroviaria(std::string s, std::string t)
+{
+
+	openStation(s);
+	openTrain(t);
+
 }
 
 void LineaFerroviaria::start()
 {	
 	
-	
+	time = orario_inizio();
 	//lettura file
 	spawnTreno();
 	while (!allTreniArrived()) {
-		//TODO : finisci la funzione start
+
 		time++;
 
-		
-
+		if (time == 922) {
+			cout << "tempo : " << time << endl << endl;
+		}
 		DaStazioneAInTransito();
 		AvanzaTreniInTransito();
 		DaDepositoAStazione();
-
-		// ADD gestione_depositi();
-		//InStazione();
-
-
+		gestione_depostio();
+		gestioneTreniInStazione();
 		updateliste();
 		spawnTreno();
+
 	}
-
-
-	//stampa ritardi
-
-
+	cout << "tempo : " << time << endl << endl;
+	stampa_timetable();
 
 }
 
 void LineaFerroviaria::spawnTreno()
 {
 	
-	for (auto it = treni.begin(); it != treni.end(); it++) {	
-		if(time<1440){
-		if(time == (*it)->getOrari()[0]){
-			if((*it)->getDir())
-				if (stazioni[0]->is_it_free(true)) {
-				
+	for (auto it = treni.begin(); it != treni.end(); it++)
+	{	
+		if(time<1440)
+		{
+			if(time == (*it)->getOrari()[0])
+			{
+				if((*it)->getDir())
+				{
+					if (stazioni[0]->is_it_free(true))
+					{
+						// TODO correggi cout
 						occupaSegnala(stazioni[0], (*it), true);								//occupa un binario e ricevi la segnalazione della stazione
 						avvisoArrivo((*it));																			//stampa in standard Arrivo di un treno in stazione
 						inStazione.push_back((*it));
-				}
-				else{
-					(*it)->setPosition(-5);
-					inDeposito.push_back(*it);}
-		}			
+					}
+					else
+					{
+						(*it)->setPosition(-5);
+						inDeposito.push_back(*it);
+					}
+				}	
 				
-			else{
-				if (stazioni[stazioni.size()-1]->is_it_free(false)){
-					occupaSegnala(stazioni[stazioni.size() - 1], (*it), false);								//occupa un binario e ricevi la segnalazione della stazione
-					avvisoArrivo((*it));																			//stampa in standard Arrivo di un treno in stazione
-					inStazione.push_back((*it));}
-				else {
-					(*it)->setPosition(posizioneStazioni[posizioneStazioni.size()-1]+5);
-					inDeposito.push_back(*it);
-				}
+				else
+				{
+					if (stazioni[stazioni.size()-1]->is_it_free(false))
+					{
+							// TODO correggi cout
+							occupaSegnala(stazioni[stazioni.size() - 1], (*it), false);								//occupa un binario e ricevi la segnalazione della stazione
+							avvisoArrivo((*it));																			//stampa in standard Arrivo di un treno in stazione
+							inStazione.push_back((*it));
+					}
+					else 
+					{
+							(*it)->setPosition(posizioneStazioni[posizioneStazioni.size()-1]+5);
+							inDeposito.push_back(*it);
+					}
+				}	
 			}
 		}
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -100,10 +93,10 @@ void LineaFerroviaria::muoviStampa(Train* t, int v)																//funzione ch
 	bool stampa = t->move(time,v);																				//muovi il treno con velocità v (return seganle)
 	if(stampa){																									//se il treno segnala
 		int i = getIndexStazione(t->getNextStation());															//calcola l'index stazione
-		cout << "il Treno numero " << t->getId() << " sta arrivando alla stazione "<< stazioni[i]->get_name();	//stampa in standard output
-		if (stazioni[i]->is_Local() && t->getIdentificator() > 0){												//controllo se Locale e se treno non è regionale
-			cout << ", non fermerà alla stazione " << endl;														//stampa in standard output
-			cout << "La stazione non segnala nulla il treno prosegue senza impedimenti nella corsia veloce " << endl;}//stampa in standard output
+		cout << "il Treno numero " << t->getId() << " sta arrivando alla stazione "<< stazioni[i]->get_name()<< " alle  " << print_time(time);	//stampa in standard output
+		if (stazioni[i]->is_local() && t->getIdentificator() > 0){												//controllo se Locale e se treno non è regionale
+			cout << ", non fermera' alla stazione " << endl;														//stampa in standard output
+			cout << "La stazione non segnala nulla il treno prosegue senza impedimenti nella corsia veloce  "<< print_time(time)<< endl;}//stampa in standard output
 		else
 			cout << ", si fermerà alla stazione "<< endl;														//stampa in standard output
 	}
@@ -111,34 +104,43 @@ void LineaFerroviaria::muoviStampa(Train* t, int v)																//funzione ch
 
 
 
-
 void LineaFerroviaria::DaDepositoAStazione()																	//gestione treni da -5 km dalla posizione della stazione a stazione
-{
-	for (auto it = daDepositoInStazione.begin(); it != daDepositoInStazione.end(); it++)						//scorro la lista
+{	
+	if(!daDepositoInStazione.empty())
 	{
-		(*it)->move( time,80);																					// muovi teno a velocità 80 km/h
-		if ((*it)->getDir()) {																					//se si muove con direzione positiva
-			if ((*it)->getPosition() > (*it)->getNextStation() ) {												//se il treno è arrivato in stazione
-				avvisoArrivo((*it));																			//stampa in standard Arrivo di un treno in stazione
-				UPDATEinStazione.push_back((*it));																// aggiungi treno alla lista dei nuovi treni in stazione
-				daDepositoInStazione.erase(it);																	//cancella il treno dalla lista
+		auto it = daDepositoInStazione.begin();
+		bool deleted= false;
+		while (!daDepositoInStazione.empty() && it != daDepositoInStazione.end())						//scorro la lista
+		{
+			deleted = false;
+			(*it)->move( time,80);																					// muovi teno a velocità 80 km/h
+			if ((*it)->getDir()) {																					//se si muove con direzione positiva
+				if ((*it)->getPosition() > (*it)->getNextStation() ) {												//se il treno è arrivato in stazione
+					avvisoArrivo((*it));																			//stampa in standard Arrivo di un treno in stazione
+					UPDATEinStazione.push_back((*it));																// aggiungi treno alla lista dei nuovi treni in stazione
+					daDepositoInStazione.erase(it);																	//cancella il treno dalla lista
+					deleted = true;
+				}
 			}
-		}
-		else {
-			if ((*it)->getPosition() < (*it)->getNextStation() ) {												//se il treno è arrivato in stazione
-				avvisoArrivo((*it));																			//stampa in standard Arrivo di un treno in stazione
-				UPDATEinStazione.push_back((*it));																// aggiungi treno alla lista dei nuovi treni in stazione
-				daDepositoInStazione.erase(it);																	// cancella il treno dalla lista
-			}
-		}
+			else {
+				if ((*it)->getPosition() < (*it)->getNextStation() ) {												//se il treno è arrivato in stazione
+					avvisoArrivo((*it));																			//stampa in standard Arrivo di un treno in stazione
+					UPDATEinStazione.push_back((*it));																// aggiungi treno alla lista dei nuovi treni in stazione
+					daDepositoInStazione.erase(it);																	//cancella il treno dalla lista
+					deleted = true;
 
+				}
+			}
+			if(!deleted)
+				it++;
+		}
 	}
 }
 void LineaFerroviaria::avvisoArrivo(Train* t)																	//funzione stampa arrivo di un treno in stazione
 {	
 	int index = getIndexStazione(t->getNextStation());															//calcola l'indice della stazione
 	cout << "Il Treno numero " << t->getId() << " è arrivato nalla stazione " << stazioni[index]->get_name();	//stampa in standard output
-	// ADD cout << " all'orario "<< print_time(time);;																						//stampa in standard output
+	cout << " all'orario "<< print_time(time);;																						//stampa in standard output
 																							
 	gestioneRitardo(t, index);																					//stampa in standard output ritatdo e lo gestisce
 	cout << endl;
@@ -220,7 +222,7 @@ void LineaFerroviaria::AvanzaTreniInTransito()
 	{
 		if (treniAndata[i]->getPosition() > (treniAndata[i]->getNextStation() - 5)) {					//la distanza dalla prossima stazione è minore di 5
 			int index = getIndexStazione(treniAndata[i]->getNextStation());								//calcola l'indice della stazione successiva
-			if (treniAndata[i]->getIdentificator() > 0 && stazioni[index]->is_Local())					//se il treno non è regionale e la stazione è locale
+			if (treniAndata[i]->getIdentificator() > 0 && stazioni[index]->is_local())					//se il treno non è regionale e la stazione è locale
 				incrementaLaStazione(treniAndata[i]);													//incrementa la prossima stazione ma non fermare il treno
 			else
 			{
@@ -241,7 +243,7 @@ void LineaFerroviaria::AvanzaTreniInTransito()
 	{
 		if (treniRitorno[i]->getPosition() < (treniRitorno[i]->getNextStation() +5)) {					//la distanza dalla prossima stazione è minore di 5		
 			int index = getIndexStazione(treniRitorno[i]->getNextStation());							//calcola l'indice della stazione successiva
-			if (treniRitorno[i]->getIdentificator() > 0 && stazioni[index]->is_Local())					//se il treno non è regionale e la stazione è locale
+			if (treniRitorno[i]->getIdentificator() > 0 && stazioni[index]->is_local())					//se il treno non è regionale e la stazione è locale
 				incrementaLaStazione(treniRitorno[i]);													//incrementa la prossima stazione ma non fermare il treno
 			else
 			{
@@ -274,23 +276,31 @@ void LineaFerroviaria::AvanzaTreniInTransito()
 }
 
 void LineaFerroviaria::DaStazioneAInTransito()															//gestione treni nei 5 km dopo la stazione
-{	
-	for (auto it = daStazioneInTransito.begin(); it != daStazioneInTransito.end(); it++)				//scorri lista
+{	if(!daStazioneInTransito.empty())
 	{
-		muoviStampa((*it), 80);																			//muovi con velocità 80km/h
-		if((*it)->getDir()){																			//se la direzione è positiva
-			if((*it)->getPosition() > (*it)->getLastStation()+5){										//se la posizione è maggiore della stazione precedente +5 km
-				UPDATEinTransito.push_back((*it));														//inserici il treno nella lista del prossimo stato
-				daStazioneInTransito.erase(it);															//elimina il treno da questo stato
+		auto it = daStazioneInTransito.begin();
+		bool deleted = false;
+		while ( !daStazioneInTransito.empty() && it != daStazioneInTransito.end() )				//scorri lista
+		{
+			deleted = false;
+			muoviStampa((*it), 80);																			//muovi con velocità 80km/h
+			if((*it)->getDir()){																			//se la direzione è positiva
+				if((*it)->getPosition() > (*it)->getLastStation()+5){										//se la posizione è maggiore della stazione precedente +5 km
+					UPDATEinTransito.push_back((*it));														//inserici il treno nella lista del prossimo stato
+					daStazioneInTransito.erase(it);	//elimina il treno da questo stato
+					deleted = true;
+				}
 			}
-		}
-		else{
-			if ((*it)->getPosition() < (*it)->getLastStation() -5) {									//se la posizione è maggiore della stazione precedente +5 km
-				UPDATEinTransito.push_back((*it));														//inserici il treno nella lista del prossimo stato
-				daStazioneInTransito.erase(it);															//elimina il treno da questo stato
+			else{
+				if ((*it)->getPosition() < (*it)->getLastStation() -5) {									//se la posizione è maggiore della stazione precedente +5 km
+					UPDATEinTransito.push_back((*it));														//inserici il treno nella lista del prossimo stato
+					daStazioneInTransito.erase(it);															//elimina il treno da questo stato
+					deleted = true;
+				}
 			}
+			if (!deleted)
+				it++;
 		}
-
 	}
 }
 	
@@ -364,12 +374,13 @@ void LineaFerroviaria::exitFromStation(Train* t)//funzione che si usa quando un 
 { 
 	daStazioneInTransito.push_front(t);																	//inserisce il treno nella lista dello stadio successivo
 	incrementaLaStazione(t);																			//incremento la nextStazione del treno uscito dalla stazione
-	t->setTime(time);																					//aggiorna il tempo del treno
+	t->setTime(time);
+	t->setParkTime(-1);																		//aggiorna il tempo del treno
 	int i = getIndexStazione(t->getLastStation());														//calcola l'indice stazione
 	// ADD cout << "Il treno "<<t->getId()<<" esce dalla sazione " << stazioni[i]->get_name() << " alle ore "<< print_time(time); ;		//stampa in standard output
 																			
 	//gestioneRitardo(t,i);
-	cout << endl;
+	//cout << endl;
 }
 
 

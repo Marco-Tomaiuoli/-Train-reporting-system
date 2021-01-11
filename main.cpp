@@ -5,7 +5,8 @@
 #include "LineaFerroviaria.h"
 
 int main() {
-	LineaFerroviaria l;
+
+	LineaFerroviaria l("stazioni.txt","treni.txt");
 	l.start();
 	return 0;
 	
