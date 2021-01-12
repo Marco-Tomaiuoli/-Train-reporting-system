@@ -1,7 +1,6 @@
 //Studente: Umberto Salviati 1220994
 
 
-
 #include "Train.h"
 
 void Train::stazioneIncrement(int posNextStat)									//funzione che incrementa la poszione della prossima stazione
@@ -116,7 +115,8 @@ bool Train::isArrived(std::vector<int> stazioni)															//funzione che co
 		return true;
 	else if (!dir && pos <= 0 && LastStation != nextStation)																				// senno se il treno è alla stazione iniziale(ricontrolla la direzione perchè il treno con direzione positiva pèotrebbe essere nel deposito dietro la prima stazione)
 		return true;
-	else false;
+	else 
+		return false;
 }
 
 float Train::getSpeed() const															//get velocità
@@ -141,10 +141,11 @@ void Train::setPosition(int p)															//set poszione
 		throw  IllegalArgument();
 }
 
-int Train::whIsStand() const															//where is standing
+int Train::whIsStand() const
 {
-	return stand;																		//stato di posizione
+	return stand;
 }
+
 
 int Train::getIdentificator() const															//identificatore
 {

@@ -24,7 +24,7 @@ private:
 	int time = 0;															//tempo
 	constexpr static int waste = 10;										//scarto massimo anticipo treno
 	constexpr static int time_stop_station = 5;								//tempo di stop minimo dei treni nelle stazioni
-	constexpr static int min_distance = 20;									//distanza minima tra due stazioni
+	constexpr static int tempo_80km = 8;
 	int n_station = 0;														//numero delle staioni
 	int n_pstation = 0;														//numero delle stazioni principali
 	int n_treni = 0;														//numero dei treni totale
@@ -50,7 +50,6 @@ private:
 	void treni_in_deposito();												//aggiorna il deposito facendo uscire i treni 
 	void posiziona_treni();													//aggiunge nel deposito i treni che devono entrare nel deposito
 	int orario_inizio();													//ritorna l'orario di partenza del primo treno
-	bool check_time(int, int, int);											//controlla se il tempo è stato cambiato correttamente
 	static bool check_distance(Stazione*, Stazione*);						//controlla se la distanza minima è rispettata
 	std::string print_time(int);											//modifica il tempo passato in minuti nel tempo in formato "ora:minuti"
 	void gestione_depostio();												//funzione che gestisce i depositi
@@ -59,37 +58,36 @@ private:
 	void stampa_timetable();												//funzione che stampa la timetable
 	std::string cambia_tipo(int);											//funzione che converte il tipo int in tipo string
 	std::string stampa_orari(std::vector<int>);								//funzione che unifica tutti gli otari in un'unica stringa
-	std::vector<int> somma_orari(std::vector<int>);							//somma l'orario di partenza con quello di arrivo alle varie stazioni
+	std::string string_orari(std::vector<int>);								//somma l'orario di partenza con quello di arrivo alle varie stazioni
+	void time_table();														//stampa la timetable con lo stesso layout del file di testo
 
-	void AvanzaTreniInTransito();
-	void DaStazioneAInTransito();
-	void DaDepositoAStazione();
-	void updateliste();
-	void occupaSegnala(Stazione*, Train*, bool);
-	void avvisoArrivo(Train*);
-	bool allTreniArrived();
-	void spawnTreno();
-	void exitFromStation(Train*);
-	int getIndexStazione(int);
-	void muoviStampa(Train*, int);
-	static bool SpeedIsGood(Train*, int);
-	static void sortTrain(std::vector<Train*>&);
-	void incrementaLaStazione(Train*);
-	static void printTrain(Train*);
-	static void sumList(std::list<Train*>&, std::list<Train*>&);
-	static void sumVector(std::vector<Train*>&, std::vector<Train*>&);
-	void gestioneRitardo(Train*, int);
 
-	void gestioneTreniInStazione();
-	void in_Stazione();
-	void trenoInPartenza(std::list<Train*>&);
-	Train* get_train(std::list<Train*>&, int, std::list<Train*>::iterator&);
-	void let_the_train_start(std::list<Train*>&);
-	void lastDelay(Train*);
+	void AvanzaTreniInTransito();													//funzione che fa avanzare i treni in transito
+	void DaStazioneAInTransito();													//funzione che fa avanzare i treni nei 5 km successivi alla stazione
+	void DaDepositoAStazione();														//funzione che fa avanzare i treni nei 5 km precedenti alla stazione
+	void updateliste();																//funzione che gestisce il passaggio dei dati tra un ciclo e il successivo
+	void occupaSegnala(Stazione*, Train*, bool);									//fusnzione che occupa il binario e restituisce il binario occupato
+	void avvisoArrivo(Train*);														//funzione che stampa l'avviso del treno
+	bool allTreniArrived();															//funzione che controlla se tutti i treni sono arrivati
+	void spawnTreno();																//funzione che mette nella linea ferroviaria i treni che partono
+	void exitFromStation(Train*);													//funzione che gestisce l'usicta dei treni dalle stazioni
+	int getIndexStazione(int);														//funzione che calcola l'indice della stazione
+	void muoviStampa(Train*, int);													//funzione che muove il treno e stampa se c'è una segnalazione
+	static bool SpeedIsGood(Train*, int);											//funzionce che controlla che la velocità sia corretta
+	static void sortTrain(std::vector<Train*>&);									//funzione che ordina un vector di treni secondo la stazione
+	void incrementaLaStazione(Train*);												//funzione che incrementa la NextStazione
+	static void sumList(std::list<Train*>&, std::list<Train*>&);					//funzione che aggiunge una lista ad un altra 
+	static void sumVector(std::vector<Train*>&, std::vector<Train*>&);				//funzione che aggiunge un vettore ad un altro
+	void gestioneRitardo(Train*, int);												//funzione che stampa e gestice i ritardi
+	void stampa_ritardi();															//funzione che stampa i ritadi finali
+
+	void gestioneTreniInStazione();													//funzione che gestisce i treni in stazione
+	void let_the_train_start(std::list<Train*>&);									//funzione che fa partire i treni secondo la priorità
+	void lastDelay(Train*);															//funzione che gestisce i ritardi finali
 public:
-	~LineaFerroviaria();													//distruttore
-	void start();
-	LineaFerroviaria(std::string, std::string);
+	~LineaFerroviaria();															//distruttore
+	void start();																	//funzione principale che fa partire la linea ferroviaria
+	LineaFerroviaria();																//costruttore che legge i file
 };
 #endif 
 

@@ -4,10 +4,7 @@
 #ifndef Train_h
 #define Train_h
 #include <iostream>
-
 #include <vector>
-//Studente: Umberto Salviati 1220994
-
 
 class Train
 {

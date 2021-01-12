@@ -1,3 +1,6 @@
+//Studente: Riccardo Trevisiol 1216353
+
+
 #include "Principale.h"
 using namespace std;
 
@@ -147,4 +150,22 @@ bool Principale::present_train(bool andata_o_ritorno)
         }
     }
     return ret;
+}
+int Principale::binario_occupato(bool andata_o_ritorno)
+{
+    int retu = 0;
+    for (int i = 0; i < num_binari; i++)
+    {
+        if (andata_o_ritorno)
+        {
+            if (gone[i] == 1)
+                retu = i;
+        }
+        else
+        {
+            if (come_back[i] == 1)
+                retu = i;
+        }
+    }
+    return retu;
 }

@@ -1,3 +1,6 @@
+//Studente: Riccardo Trevisiol 1216353
+
+
 #include "Locale.h"
 using namespace std; 
 

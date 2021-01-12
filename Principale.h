@@ -1,4 +1,6 @@
 //Studente: Trevisiol Riccardo 1216353
+
+
 #ifndef PRINCIPALE_H
 #define PRINCIPALE_H
 #include "Stazione.h"
@@ -10,8 +12,9 @@ public:
     Principale(std::string, int);
     virtual int is_arriving(bool, int) override;
     bool is_it_free(bool) override; //prende in input 0 se treno in andata, 1 se treno in ritorno; dice se c'è almeno un binario libero
-    void change_status(bool, int);
-    virtual bool present_train(bool) override;
+    void change_status(bool, int)override;
+    bool present_train(bool) override;
+    int binario_occupato(bool)override;
 
 protected:
     //prende in input 0 se treno in andata, 1 se treno in ritorno; cambia lo stato del binario

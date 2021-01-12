@@ -1,12 +1,11 @@
 //Studente: Umberto Salviati 1220994
 
 
-
 #include "LineaFerroviaria.h"
 
 int main() {
 
-	LineaFerroviaria l("stazioni.txt","treni.txt");
+	LineaFerroviaria l;
 	l.start();
 	return 0;
 	

@@ -1,3 +1,6 @@
+//Studente: Riccardo Trevisiol 1216353
+
+
 #include "Stazione.h"
 using namespace std;
 
